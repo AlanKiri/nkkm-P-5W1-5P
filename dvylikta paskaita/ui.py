@@ -42,21 +42,14 @@ class UI(Storage):
     def drink_menu_selection(self):
         for key, drink in self.coffee_recipes.items():
             ingredients = ''
-                
-            ingredients += f"{drink['coffee_ground']} grams of {self.get_formatted_ingredient('coffee_ground', drink, 'ground')} "
             
-            if 'water' in drink:
-                    ingredients += f"{drink['water']} ml of {self.get_formatted_ingredient('water',  drink)}. "
-            if 'milk' in drink:
-                    ingredients += f"{drink['milk']} ml of {self.get_formatted_ingredient('milk', drink, 'steamed milk') if drink['milk_steamed'] == True else self.get_formatted_ingredient('milk', drink)}. "
-            if 'milk_foam' in drink:
-                    ingredients += f"{drink['milk_foam']} ml of {self.get_formatted_ingredient('milk_foam', drink, 'steamed foam milk') if drink['foam_steamed'] == True else self.get_formatted_ingredient('milk_foam', drink, 'milk foam')}. "
-            if 'chocolate_syrup' in drink:
-                    ingredients += f"{drink['chocolate_syrup']} grams of {self.get_formatted_ingredient('chocolate_syrup',  drink, 'chocolate syrup')}. "
-            if 'vanilla_ice_cream' in drink:
-                    ingredients += f"{drink['vanilla_ice_cream']} grams of {self.get_formatted_ingredient('vanilla_ice_cream',  drink, 'vanilla ice cream')}. "
-            if 'sugar' in drink:
-                    ingredients += f"{drink['sugar']} grams of {self.get_formatted_ingredient('sugar',  drink)}. "
+            for ingredient, amount in self.ingredients.items():
+                if ingredient in drink:
+                    steamed_name = f"{ingredient}_steamed"
+                    if steamed_name in self.ingredients:
+                        ingredients += f"{drink[ingredient]} ml/g of {self.get_formatted_ingredient(ingredient, drink, f'steamed {ingredient.title().replace('_', ' ')}') if drink[steamed_name] == True else self.get_formatted_ingredient(ingredient, drink, ingredient.title().replace('_', ' '))}."
+                    else: 
+                        ingredients += f"{drink[ingredient]} ml/g of {self.get_formatted_ingredient(ingredient, drink, ingredient.title().replace('_', ' '))} "
 
             print(f"{key.title()}, ingredients: {ingredients}\n")
         
@@ -66,8 +59,22 @@ class UI(Storage):
                 continue
             else:
                 return choice
-        
-    
-        
             
+    def drink_details_menu_selection(self, drink:str):
+        print(f"You selected {drink.title()}")
+        drink_in_stock = self.check_drink_stock(drink)
+        print('Stock is ok. Enter anything to proceed.' if drink_in_stock else self.underscore('Stock is not okay. Sorry, but we cannot proceed without required ingredients. Please press enter to return into main menu.'))
+        input('')
+        return drink_in_stock
+    
+    def restock_menu_selection(self):
+        print("You want to restock, don't you?")
         
+        for ingredient, stock in self.ingredients.items():
+            print(f"{ingredient.title().replace('_', ' ')}, current stock {stock} g/ml")
+            
+        print('Please select products you want to order.')
+        
+        choice = list(map(lambda ingredient: ingredient.lower(), input().split()))
+        
+        return choice

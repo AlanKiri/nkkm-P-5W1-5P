@@ -69,7 +69,7 @@ class Storage:
     
     def __init__(self):
         self.ingredients = {
-            "water": randint(1000, 2000),
+            "water":0,
             "milk": randint(1000, 2000),
             "milk_foam": randint(100, 500),
             "coffee_beans": randint(500, 1000),
@@ -78,6 +78,13 @@ class Storage:
             "vanilla_ice_cream": 250,
             "sugar": 100
             }
+        
+    def check_drink_stock(self, drink:str):
+        result = True
+        for ingredient, required_stock in self.coffee_recipes[drink].items():
+            if ingredient in self.ingredients and not self.check_ingredient_stock(ingredient, required_stock):
+                result = False
+        return result
         
     def check_ingredient_stock(self, ingredient:str, required_stock:int):
         if ingredient in self.ingredients:
@@ -90,3 +97,16 @@ class Storage:
         else:
             return None        
         
+    def remove_used_ingredients(self, ingredients):
+        for ingredient, required_stock in ingredients.items():
+            if ingredient in self.ingredients:
+                self.ingredients[ingredient] -= required_stock
+        
+    def grind_coffee_beans(self, amount):
+        self.ingredients['coffee_ground']+=amount
+        self.ingredients['coffee_beans']-=amount
+        
+    def order_ingredients(self, ingredient):
+        arrived_stock = randint(100,300)
+        self.ingredients[ingredient] += arrived_stock
+        return arrived_stock
