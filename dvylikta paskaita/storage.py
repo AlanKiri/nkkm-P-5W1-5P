@@ -69,7 +69,7 @@ class Storage:
     
     def __init__(self):
         self.ingredients = {
-            "water": randint(500, 1000),
+            "water": randint(1000, 2000),
             "milk": randint(1000, 2000),
             "milk_foam": randint(100, 500),
             "coffee_beans": randint(500, 1000),
@@ -81,7 +81,7 @@ class Storage:
         
     def check_ingredient_stock(self, ingredient:str, required_stock:int):
         if ingredient in self.ingredients:
-            if ingredient == 'coffee_ground' and self.ingredients[ingredient] > required_stock or self.ingredients['coffee_beans'] > required_stock:
+            if ingredient == 'coffee_ground' and (self.ingredients[ingredient] > required_stock or self.ingredients['coffee_beans'] > required_stock):
                 return True
             elif self.ingredients[ingredient] > required_stock:
                 return True

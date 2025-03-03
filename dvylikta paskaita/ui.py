@@ -19,7 +19,7 @@ class UI(Storage):
             formatted_ingredient = ingredient
             
         required_stock = drink[ingredient]
-        return formatted_ingredient if  self.check_ingredient_stock(ingredient, required_stock) else self.underscore(formatted_ingredient)
+        return formatted_ingredient if self.check_ingredient_stock(ingredient, required_stock) else self.underscore(formatted_ingredient)
         
     def display_stock(self):
         for ingredient, stock in self.ingredients.items():
