@@ -2,11 +2,14 @@ from fastapi import FastAPI
 from pydantic import BaseModel, Field, EmailStr
 from routers.lib import lib_router
 from routers.users import users_router
+from routers.notes import notes_router
 
 app = FastAPI()
 
 app.include_router(lib_router, prefix='/game', tags=['game'])
 app.include_router(users_router, prefix='/users', tags=['user'])
+app.include_router(notes_router, prefix='/notes', tags=['notes'])
+
 
 
 # Path params
@@ -40,6 +43,10 @@ def post_funkcija(book: Book):
     
 class Something(BaseModel):
     test: str
+    
+@app.get('/test')
+def test(test:int):
+    return test
 
 @app.post('/combined/{path_param}', tags=['main'])
 def combined(path_param, something:Something, query_param: str = None):
@@ -51,6 +58,32 @@ class User(BaseModel):
     terms:bool = Field(default=True)
     email: EmailStr
 
-@app.post('/register', tags=['main'])
-def register(user:User):
-    return user
+# @app.post('/register', tags=['main'])
+# def register(user:User):
+#     return user
+
+
+# Task 1: Hello endpoint
+@app.get("/hello")
+def hello(name: str):
+    return {"message": f"Hello, {name}!"}
+
+# Task 2: Add endpoint
+@app.get("/add")
+def add(a: int, b: int):
+    return {"result": a + b}
+
+# Task 3: Register endpoint
+class User(BaseModel):
+    username: str
+    email: str
+    password: str
+
+@app.post("/register")
+def register(user: User):
+    return {"message": f"User {user.username} registered successfully"}
+
+# Task 4: Get item by ID
+@app.get("/items/{item_id}")
+def get_item(item_id: int):
+    return {"item_id": item_id, "description": "This is a sample item."}
