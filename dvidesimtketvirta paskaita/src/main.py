@@ -3,8 +3,13 @@ from pydantic import BaseModel, Field, EmailStr
 from routers.lib import lib_router
 from routers.users import users_router
 from routers.notes import notes_router
+from models.users import UserORM
+from models.posts import PostORM
+from database import Base, engine, get_db, Session
 
 app = FastAPI()
+
+Base.metadata.create_all(engine)
 
 app.include_router(lib_router, prefix='/game', tags=['game'])
 app.include_router(users_router, prefix='/users', tags=['user'])
@@ -40,7 +45,7 @@ def post_funkcija(book: Book):
     book.price = book.price * 2
     return book
 
-    
+
 class Something(BaseModel):
     test: str
     
@@ -52,7 +57,7 @@ def test(test:int):
 def combined(path_param, something:Something, query_param: str = None):
     return {"path_param":path_param, "something":something, "query_param":query_param}
 
-class User(BaseModel):
+class UserORM(BaseModel):
     name: str = Field(max_length=20, min_length=3)
     age: int = Field(ge=18)
     terms:bool = Field(default=True)
@@ -74,13 +79,13 @@ def add(a: int, b: int):
     return {"result": a + b}
 
 # Task 3: Register endpoint
-class User(BaseModel):
+class UserORM(BaseModel):
     username: str
     email: str
     password: str
 
 @app.post("/register")
-def register(user: User):
+def register(user: UserORM):
     return {"message": f"User {user.username} registered successfully"}
 
 # Task 4: Get item by ID
