@@ -5,6 +5,7 @@ from routers.users import users_router
 from routers.notes import notes_router
 from routers.posts import post_router
 from routers.school import school_router
+from routers.servers import servers_router 
 from models.users import UserORM
 from models.posts import PostORM
 from database import Base, engine, get_db, Session
@@ -18,6 +19,7 @@ app.include_router(users_router, prefix='/users', tags=['user'])
 app.include_router(notes_router, prefix='/notes', tags=['notes'])
 app.include_router(post_router, prefix='/posts', tags=['posts'])
 app.include_router(school_router, prefix='/school', tags=['school'])
+app.include_router(servers_router, prefix='/servers', tags=['servers'])
 
 
 
