@@ -1,12 +1,13 @@
 from fastapi import FastAPI
 from pydantic import BaseModel, Field, EmailStr
 from routers.lib import lib_router
-from routers.users import users_router
+from routers.users_old import users_router
 from routers.notes import notes_router
 from routers.posts import post_router
 from routers.school import school_router
 from routers.servers import servers_router 
-from models.users import UserORM
+from routers.users import router as users_router
+# from models.users_old import UserORM
 from models.posts import PostORM
 from database import Base, engine, get_db, Session
 
