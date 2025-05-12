@@ -24,19 +24,20 @@ class RoleRead(BaseModel):
     
     model_config = ConfigDict(from_attributes=True)
     
-class UserRead(BaseModel):
-    id:int
-    first_name:str
-    last_name:str
-    birthdate_unix:int
-    
-    model_config = ConfigDict(from_attributes=True)
-    
 class ProfileRead(BaseModel):
     id:int
     bio:str
     
     model_config = ConfigDict(from_attributes=True)
     
+class UserRead(BaseModel):
+    id:int
+    first_name:str
+    last_name:str
+    birthdate_unix:int
+    profile:ProfileRead
+    role:RoleRead
+    
+    model_config = ConfigDict(from_attributes=True)
     
     
